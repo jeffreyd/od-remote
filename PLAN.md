@@ -25,7 +25,7 @@ This is the main screen once a radio is selected. It has two sections:
 **Favorites List (main body)**
 - Fetches all pages from `GET http://<host>/php/favList.php?PG=0`, `PG=1`, etc. using `total` and `itemsPerPage` from `favListInfo` to determine page count
 - Displays station names in a scrollable list
-- Tapping a station sends `GET http://<host>/doApi.cgi/AI=16&CI=<index>` to start playback, where `<index>` is the station's position in the overall favorites list (page * itemsPerPage + position on page)
+- Tapping a station sends `GET http://<host>/doApi.cgi?AI=16&CI=<index>` to start playback, where `<index>` is the station's position in the overall favorites list (page * itemsPerPage + position on page)
 - Pull-to-refresh to reload the favorites list
 - Highlights the currently playing station if it matches by name
 
@@ -72,13 +72,21 @@ lib/
     now_playing_bar.dart      — Current station display widget
 ```
 
-## Build Order
+## Implementation Status
 
-1. Scaffold the Flutter project and add dependencies
-2. Implement models (`RadioDevice`, `Station`)
-3. Implement `RadioApiService` — HTTP calls and regex parsing
-4. Implement `RadioStorageService` — persist radios to shared_preferences
-5. Build the Radio List screen (add/edit/delete radios)
-6. Build the Now Playing screen (favorites list + now playing bar + play action)
-7. Wire up navigation between screens
-8. Polish: error handling for unreachable radios, loading states, pull-to-refresh
+All items complete:
+
+1. ~~Scaffold the Flutter project and add dependencies~~
+2. ~~Implement models (`RadioDevice`, `Station`)~~
+3. ~~Implement `RadioApiService` — HTTP calls and regex parsing~~
+4. ~~Implement `RadioStorageService` — persist radios to shared_preferences~~
+5. ~~Build the Radio List screen (add/edit/delete radios)~~
+6. ~~Build the Now Playing screen (favorites list + now playing bar + play action)~~
+7. ~~Wire up navigation between screens~~
+8. ~~Polish: error handling for unreachable radios, loading states, pull-to-refresh~~
+
+Additional details:
+- Custom app icon from `assets/icon.png` generated via `flutter_launcher_icons`
+- Cleartext HTTP enabled in AndroidManifest (radios use plain HTTP)
+- Now playing bar auto-refreshes every 5s; poll timer resets after station change to avoid overwriting optimistic UI update
+- Play endpoint uses query string format (`?AI=16&CI=`) not path format (`/AI=16&CI=`)
